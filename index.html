@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa zieleni przydrożnej Poznania</title>
+
+    <!-- leaflet css  -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .coordinate {
+            position: absolute;
+            bottom: 10px;
+            right: 50%;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background-color: #000000;
+            color: #fff;
+            border: 1px solid red;
+            border-radius: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+        <div class="leaflet-control coordinate"></div>
+    </div>
+</body>
+
+</html>
+
+<!-- leaflet js  -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="./data/GVI_map.js"></script>
+
+
+<script>
+      // Map initialization 
+      var map = L.map('map').setView([52.4064, 16.9252], 12);
+
+    // dark map 
+    var dark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+          subdomains: 'abcd',
+          maxZoom: 20
+      });
+      dark.addTo(map)
+
+      //osm layer
+      var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      });
+      osm.addTo(map);
+
+      // google street 
+      googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+          maxZoom: 20,
+          subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+      });
+
+    //google satellite
+    googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+          maxZoom: 20,
+          subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+      });
+
+  
+
+    /*==============================================
+                GEOJSON
+    ================================================*/
+
+
+   var pointData = L.geoJson(pointJson, {
+
+      style: function(feature) {
+        var gvi = feature.properties.greenView;
+        if (gvi <= 0) {
+          return {
+            color: "#ff0000"
+          }; 
+        }
+        else if (gvi <= 7.2) {
+          return {
+            color: "#d92d16"
+          };
+        }
+        else if (gvi <= 14.3) {
+          return {
+            color: "#fe5d23"
+          };
+        }
+        else if (gvi <= 20.1) {
+          return {
+            color: "#fd9d26"
+          };
+        }
+        else if (gvi <= 26) {
+          return {
+            color: "#fede2e"
+          };
+        }
+        else if (gvi <= 32.2) {
+          return {
+            color: "#e3f43c"
+          };  
+        } else if (gvi <= 38.9) {
+          return {
+            color: "#acde50"
+          };
+        } else if (gvi <= 47) {
+          return {
+            color: "#65bc4c"
+          };
+        } else if (gvi >47) {
+          return {
+            color: "#1a9641"
+          }
+        }
+      },
+
+      onEachFeature: function(feature, layer) {
+
+        var popupText = "<b>Green View Index:</b> " + feature.properties.greenView
+
+        layer.bindPopup(popupText, {
+          closeButton: true,
+          offset: L.point(0, -20)
+        });
+        layer.on('click', function() {
+          layer.openPopup();
+        });
+      },
+
+    pointToLayer: function(feature, latlng) {
+      return L.circleMarker(latlng, {
+        stroke: true,
+        color: '#000000',
+        weight: 2,
+        radius: 5,
+        fillColor: "",
+        opacity: 1,
+        fillOpacity: 0.9
+      });
+    },
+    }).addTo(map);
+
+    
+
+    /*==============================================
+                    LAYERS
+    ================================================*/
+    var baseMaps = {
+        'OpenStreetMaps': osm,
+        'Dark Stadia': dark,
+        'Google Maps': googleStreets,
+        'Google Satellites': googleSat
+    };
+    var overlayMaps = {
+        'Punkty ze wskaźnikiem GVI': pointData
+    };
+
+    L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+
+</script>
