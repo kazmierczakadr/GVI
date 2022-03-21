@@ -46,15 +46,18 @@
 <!-- leaflet js  -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="./data/GVI_map.js"></script>
-
+<!--<link rel="stylesheet" href="../src/leaflet.legend.css" /> --> 
+<!-- <script type="text/javascript" src="../src/leaflet.legend.js"></script>--> 
 
 <script>
       // Map initialization 
       var map = L.map('map').setView([52.4064, 16.9252], 12);
 
-      //osm layer
-      var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      //CartoDark
+      var CartoDB_DarkMatterNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	    subdomains: 'abcd',
+	    maxZoom: 20
       });
       osm.addTo(map);
 
@@ -83,44 +86,44 @@
         var gvi = feature.properties.greenView;
         if (gvi <= 0) {
           return {
-            color: "#ff0000"
+            color: "#2f2f2f"
           }; 
         }
         else if (gvi <= 7.2) {
           return {
-            color: "#d92d16"
+            color: "#374632"
           };
         }
         else if (gvi <= 14.3) {
           return {
-            color: "#fe5d23"
+            color: "#3d5e33"
           };
         }
         else if (gvi <= 20.1) {
           return {
-            color: "#fd9d26"
+            color: "#407734"
           };
         }
         else if (gvi <= 26) {
           return {
-            color: "#fede2e"
+            color: "#419132"
           };
         }
         else if (gvi <= 32.2) {
           return {
-            color: "#e3f43c"
+            color: "#40ab2f"
           };  
         } else if (gvi <= 38.9) {
           return {
-            color: "#acde50"
+            color: "#3ac729"
           };
         } else if (gvi <= 47) {
           return {
-            color: "#65bc4c"
+            color: "#2de21e"
           };
         } else if (gvi >47) {
           return {
-            color: "#1a9641"
+            color: "#07ff01"
           }
         }
       },
@@ -157,7 +160,7 @@
                     LAYERS
     ================================================*/
     var baseMaps = {
-        'OpenStreetMaps': osm,
+        'CartoDark': CartoDB_DarkMatterNoLabels,
         'Google Maps': googleStreets,
         'Google Satellites': googleSat
     };
@@ -166,5 +169,78 @@
     };
 
     L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+
+    /*==============================================
+                    LEGEND
+    ================================================*/
+
+    const legend = L.control.Legend({
+            position: "bottomleft",
+            collapsed: false,
+            symbolWidth: 24,
+            opacity: 1,
+            column: 2,
+            legends: [{
+                label: "GVI = 0",
+                type: "circle",
+                url: "marker/marker-red.png",
+            }, {
+                label: "Marker2",
+                type: "image",
+                url: "marker/purple.png"
+            }, {
+                label: "Circle",
+                type: "circle",
+                radius: 5,
+                color: "blue",
+                fillColor: "#FF0000",
+                fillOpacity: 0.6,
+                weight: 2,
+                layers: [pointJson],
+                inactive: false,
+            }, {
+                label: "Real line",
+                type: "polyline",
+                color: "#FF0000",
+                fillColor: "#FF0000",
+                weight: 2,
+                layers: polyline
+            }, {
+                label: "Dotted line",
+                type: "polyline",
+                color: "#0000FF",
+                fillColor: "#0000FF",
+                dashArray: [5, 5],
+                weight: 2
+            }, {
+                label: "Rectangle",
+                type: "rectangle",
+                color: "#FF0000",
+                fillColor: "#FF0000",
+                weight: 2
+            }, {
+                label: "Square",
+                type: "polygon",
+                sides: 4,
+                color: "#FF0000",
+                fillColor: "#FF0000",
+                weight: 2
+            }, {
+                label: "Regular triangle",
+                type: "polygon",
+                sides: 3,
+                color: "#FF0000",
+                fillColor: "#FF0000",
+                weight: 2
+            }, {
+                label: "Regular polygon",
+                type: "polygon",
+                sides: 5,
+                color: "#FF0000",
+                fillColor: "#FF0000",
+                weight: 2
+            }]
+        })
+        .addTo(map);
 
 </script>
