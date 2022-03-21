@@ -93,10 +93,10 @@
           maxZoom: 20,
           subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
       });
-      googleStreets.addTo(map);
-	
+      
+
     //google satellite
-    googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+      googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
           maxZoom: 20,
           subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
       });
@@ -107,6 +107,7 @@
 	    subdomains: 'abcd',
 	    maxZoom: 20
       });
+      CartoDB_DarkMatterNoLabels.addTo(map);
 
     /*==============================================
                 GEOJSON
@@ -119,44 +120,44 @@
         var gvi = feature.properties.greenView;
         if (gvi <= 0) {
           return {
-            color: "#2f2f2f"
+            color: "#c28525"
           }; 
         }
         else if (gvi <= 7.2) {
           return {
-            color: "#374632"
+            color: "#b69a23"
           };
         }
         else if (gvi <= 14.3) {
           return {
-            color: "#3d5e33"
+            color: "#a9ac20"
           };
         }
         else if (gvi <= 20.1) {
           return {
-            color: "#407734"
+            color: "#9bbc1d"
           };
         }
         else if (gvi <= 26) {
           return {
-            color: "#419132"
+            color: "#8ccb1a"
           };
         }
         else if (gvi <= 32.2) {
           return {
-            color: "#40ab2f"
+            color: "#7ad917"
           };  
         } else if (gvi <= 38.9) {
           return {
-            color: "#3ac729"
+            color: "#66e713"
           };
         } else if (gvi <= 47) {
           return {
-            color: "#2de21e"
+            color: "#4cf30d"
           };
         } else if (gvi >47) {
           return {
-            color: "#07ff01"
+            color: "#24ff00"
           }
         }
       },
@@ -193,9 +194,9 @@
                     LAYERS
     ================================================*/
     var baseMaps = {
+        'CartoDark': CartoDB_DarkMatterNoLabels,
         'Google Maps': googleStreets,
-        'Google Satellites': googleSat,
-	'CartoDark': CartoDB_DarkMatterNoLabels
+        'Google Satellites': googleSat
     };
     var overlayMaps = {
         'Punkty ze wskaźnikiem GVI': pointData
@@ -211,14 +212,15 @@ var legend = L.control({ position: "bottomleft" });
 
 legend.onAdd = function(map) {
   var div = L.DomUtil.create("div", "legend");
-  div.innerHTML += '<i style="background: #2f2f2f"></i><span><b>GVI</b> = 0</span><br>';
-  div.innerHTML += '<i style="background: #374632"></i><span>7,2 < <b>GVI</b> ≥ 14,3</span><br>';
-  div.innerHTML += '<i style="background: #3d5e33"></i><span>14,3 < <b>GVI</b> ≥ 20,1</span><br>';
-  div.innerHTML += '<i style="background: #407734"></i><span>20,1 < <b>GVI</b> ≥ 26</span><br>';
-  div.innerHTML += '<i style="background: #419132"></i><span>26 < <b>GVI</b> ≥ 32,2 </span><br>';
-  div.innerHTML += '<i style="background: #40ab2f"></i><span>32,2 < <b>GVI</b> ≥ 38,9 </span><br>';
-  div.innerHTML += '<i style="background: #3ac729"></i><span>38,9 < <b>GVI</b> ≥ 47</span><br>';
-  div.innerHTML += '<i style="background: #2de21e"></i><span>47 < <b>GVI</b> </span><br>';
+  div.innerHTML += '<i style="background: #c28525"></i><span><b>GVI</b> = 0</span><br>';
+  div.innerHTML += '<i style="background: #b69a23"></i><span>0 < < <b>GVI</b> ≥ 7,2</span><br>';
+  div.innerHTML += '<i style="background: #a9ac20"></i><span>7,2 < <b>GVI</b> ≥ 14,3</span><br>';
+  div.innerHTML += '<i style="background: #9bbc1d"></i><span>14,3 < <b>GVI</b> ≥ 20,1</span><br>';
+  div.innerHTML += '<i style="background: #8ccb1a"></i><span>20,1 < <b>GVI</b> ≥ 26</span><br>';
+  div.innerHTML += '<i style="background: #7ad917"></i><span>26 < <b>GVI</b> ≥ 32,2 </span><br>';
+  div.innerHTML += '<i style="background: #66e713"></i><span>32,2 < <b>GVI</b> ≥ 38,9 </span><br>';
+  div.innerHTML += '<i style="background: #4cf30d"></i><span>38,9 < <b>GVI</b> ≥ 47</span><br>';
+  div.innerHTML += '<i style="background: #24ff00"></i><span>47 < <b>GVI</b> </span><br>';
   return div;
 };
 
