@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+  <div id="mapid"></div>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +32,41 @@
             border: 1px solid red;
             border-radius: 0px;
         }
+        .legend {
+            padding: 6px 8px;
+            font: 14px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
+            /*border-radius: 5px;*/
+            line-height: 24px;
+            color: #555;
+          }
+        .legend h4 {
+            text-align: center;
+            font-size: 16px;
+            margin: 2px 12px 8px;
+            color: #777;
+          }
+
+        .legend span {
+            position: relative;
+            bottom: 3px;
+          }
+
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin: 0 8px 0 0;
+            opacity: 0.7;
+          }
+
+        .legend i.icon {
+            background-size: 18px;
+            background-color: rgba(255, 255, 255, 1);
+          }
+
     </style>
 </head>
 
@@ -46,7 +81,7 @@
 <!-- leaflet js  -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="./data/GVI_map.js"></script>
-<!--<link rel="stylesheet" href="../src/leaflet.legend.css" /> --> 
+
 <!-- <script type="text/javascript" src="../src/leaflet.legend.js"></script>--> 
 
 <script>
@@ -59,7 +94,7 @@
 	    subdomains: 'abcd',
 	    maxZoom: 20
       });
-      osm.addTo(map);
+      CartoDB_DarkMatterNoLabels.addTo(map);
 
       // google street 
       googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
@@ -173,105 +208,22 @@
     /*==============================================
                     LEGEND
     ================================================*/
+/*Legend specific*/
+var legend = L.control({ position: "bottomleft" });
 
-    const legend = L.control.Legend({
-            position: "bottomleft",
-            collapsed: false,
-            symbolWidth: 24,
-            opacity: 1,
-            column: 2,
-            legends: [{
-                label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-            }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-            }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-            }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-            }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-            }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-            }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-              }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-              }, {
-              label: "GVI = 0",
-                type: "circle",
-                radius: 5,
-                color: "blue",
-                fillColor: "#FF0000",
-                fillOpacity: 0.6,
-                weight: 2,
-                layers: [pointData],
-                inactive: false,
-            }]
-        })
-        .addTo(map);
+legend.onAdd = function(map) {
+  var div = L.DomUtil.create("div", "legend");
+  div.innerHTML += '<i style="background: #2f2f2f"></i><span><b>GVI</b> = 0</span><br>';
+  div.innerHTML += '<i style="background: #374632"></i><span>7,2 < <b>GVI</b> ≥ 14,3</span><br>';
+  div.innerHTML += '<i style="background: #3d5e33"></i><span>14,3 < <b>GVI</b> ≥ 20,1</span><br>';
+  div.innerHTML += '<i style="background: #407734"></i><span>20,1 < <b>GVI</b> ≥ 26</span><br>';
+  div.innerHTML += '<i style="background: #419132"></i><span>26 < <b>GVI</b> ≥ 32,2 </span><br>';
+  div.innerHTML += '<i style="background: #40ab2f"></i><span>32,2 < <b>GVI</b> ≥ 38,9 </span><br>';
+  div.innerHTML += '<i style="background: #3ac729"></i><span>38,9 < <b>GVI</b> ≥ 47</span><br>';
+  div.innerHTML += '<i style="background: #2de21e"></i><span>47 < <b>GVI</b> </span><br>';
+  return div;
+};
+
+legend.addTo(map);
 
 </script>
