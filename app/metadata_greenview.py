@@ -70,6 +70,6 @@ if __name__ == "__main__":
     root = 'data'
     inputShp = os.path.join(root,'poznan_ulice_pts.shp')
     outputTxt = root+'/json_files'
-    api_key = 'AIzaSyBXxyQNlVhToDvkrqadlWlFlSgdoTJkBxo'
+    api_key = 'hidden'
     
     GSVMetadataCollector(inputShp, 1,outputTxt, api_key)

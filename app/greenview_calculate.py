@@ -131,5 +131,5 @@ if __name__ == "__main__":
     GSVinfoRoot = 'data/json_files'
     outputTextPath = r'data/spatial-data/greenViewRes'
     greenmonth = ['03','04','05','06','07','08','09','10']
-    key = 'AIzaSyBXxyQNlVhToDvkrqadlWlFlSgdoTJkBxo'
+    key = 'HIDDEN'
     GreenViewComputing_ogr_6Horizon(GSVinfoRoot,outputTextPath, greenmonth, key)
